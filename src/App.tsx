@@ -1,44 +1,55 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Header from "./components/Header";
-import SignIn from "./pages/SignIn";
-import SignUp from "./pages/SignUp";
-import About from "./pages/About";
-import Home from "./pages/Home";
-import Profile from "./pages/Profile";
-import AuthRoute from "./components/AuthRoute";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import Loader from "./components/Loader";
+import React, { Suspense, lazy } from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-const App = () => {
+// Layout components
+import { ErrorBoundary } from './components/ErrorBoundary';
+import Header from './components/Header';
+import Loader from './components/Loader';
+import AuthRoute from './components/AuthRoute';
+
+// Auth components
+
+// Lazy-loaded components
+const Home = lazy(() => import('./pages/Home'));
+const About = lazy(() => import('./pages/About'));
+const SignIn = lazy(() => import('./pages/SignIn'));
+const SignUp = lazy(() => import('./pages/SignUp'));
+const Profile = lazy(() => import('./pages/Profile'));
+
+const App: React.FC = () => {
   return (
-    <>
+    <ErrorBoundary>
       <BrowserRouter>
         <Header />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/signin" element={<SignIn />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route element={<AuthRoute />}>
-            <Route path="/profile" element={<Profile />} />
-          </Route>
-        </Routes>
+        <main className="container mx-auto px-4 py-8">
+          <Suspense fallback={<Loader />}>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/signin" element={<SignIn />} />
+              <Route path="/signup" element={<SignUp />} />
+              <Route element={<AuthRoute />}>
+                <Route path="/profile" element={<Profile />} />
+              </Route>
+            </Routes>
+          </Suspense>
+        </main>
       </BrowserRouter>
       <ToastContainer
         position="top-right"
-        autoClose={1000}
+        autoClose={5000}
         hideProgressBar={false}
-        newestOnTop={false}
+        newestOnTop
         closeOnClick
         rtl={false}
         pauseOnFocusLoss
         draggable
         pauseOnHover
-        theme="light"
       />
-      <Loader />
-    </>
+    </ErrorBoundary>
   );
 };
+
 export default App;

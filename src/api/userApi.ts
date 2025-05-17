@@ -1,28 +1,27 @@
 import axiosClient from './axiosClient';
-import { API_ENDPOINTS } from './apiEndpoints';
 
-export const getAllUser = async () => {
-    const response = await axiosClient.get(API_ENDPOINTS.GET_ALL_USER);
+export const getUsers = async () => {
+    const response = await axiosClient.get('/user');
     return response.data;
 };
 
-export const getUser = async () => {
-    const response = await axiosClient.get(API_ENDPOINTS.GET_USER);
+export const getUser = async (id: string) => {
+    const response = await axiosClient.get(`/user/:${id}`);
     return response.data;
 };
 
-export const updateUser = async (payload: {
+export const updateUser = async (id: string, payload: {
     name?: string;
     email?: string;
     profilePicture?: string;
     role?: string;
     password?: string;
 }) => {
-    const response = await axiosClient.put(API_ENDPOINTS.UPDATE_USER, payload);
+    const response = await axiosClient.put(`/user/:${id}`, payload);
     return response.data;
 };
 
-export const deleteUser = async () => {
-    const response = await axiosClient.delete(API_ENDPOINTS.DELETE_USER);
+export const deleteUser = async (id: string) => {
+    const response = await axiosClient.delete(`/user/:${id}`);
     return response.data;
 };

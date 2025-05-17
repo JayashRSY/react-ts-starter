@@ -1,8 +1,7 @@
 import axios from 'axios';
-import { API_ENDPOINTS } from './apiEndpoints';
 import { IRefreshToken } from '../interfaces/IApiTypes';
-import { store } from '../app/store';
 import { setLoader } from '../features/layout/layoutSlice';
+import { store } from '../store';
 
 // Create an instance of Axios
 const axiosClient = axios.create({
@@ -46,7 +45,7 @@ axiosClient.interceptors.response.use(
 
             try {
                 // Refresh the token
-                const response = await axios.get<IRefreshToken>(API_ENDPOINTS.REFRESH);
+                const response = await axios.get<IRefreshToken>('/auth/refresh-token');
 
                 const { accessToken } = response.data;
                 localStorage.setItem('accessToken', accessToken);

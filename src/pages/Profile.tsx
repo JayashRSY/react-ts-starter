@@ -8,7 +8,6 @@ import { ISignoutResponse } from "../interfaces/IApiTypes";
 import { signout } from "../api/authApi";
 import { setUser } from "../features/auth/authSlice";
 import { validateImage } from "../configs/fileValidations";
-import { supabase } from "../configs/supabase";
 import { updateUser } from "../api/userApi";
 
 const Profile = () => {
@@ -43,23 +42,7 @@ const Profile = () => {
         return;
       }
       const fileName = new Date().getTime() + file.name;
-      const { data, error } = await supabase.storage
-        .from("dev-app-bucket")
-        .upload(`uploads/images/${fileName}`, file, {
-          upsert: false,
-        });
-      if (data) {
-        setFormData({
-          ...formData,
-          ["profilePicture"]:
-            import.meta.env.VITE_SUPABASE_URL +
-            "/storage/v1/object/public/" +
-            data.fullPath,
-        });
-      }
-      if (error) {
-        toast.error(error.message);
-      }
+      console.log("🚀 ~ file: Profile.tsx:45 ~ fileName:", fileName)
     }
     setImgLoader(false);
   };

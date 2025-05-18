@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from './useRedux';
-import { toast } from 'react-toastify';
 import { ISigninResponse } from '../interfaces/IApiTypes';
 import { setUser } from '../features/auth/authSlice';
 import axiosClient from '../api/axiosClient';
+import { toast } from 'sonner';
 
 export const useAuth = () => {
   const dispatch = useAppDispatch();

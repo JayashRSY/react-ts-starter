@@ -1,14 +1,14 @@
 import { useSelector } from "react-redux";
 import { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import { RootState } from "../app/store";
-import * as Icon from "react-feather";
-import { toast } from "react-toastify";
 import { ISignoutResponse } from "../interfaces/IApiTypes";
 import { signout } from "../api/authApi";
 import { setUser } from "../features/auth/authSlice";
 import { validateImage } from "../configs/fileValidations";
 import { updateUser } from "../api/userApi";
+import { RootState } from "../store";
+import { Edit } from "lucide-react";
+import { toast } from "sonner";
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -57,7 +57,7 @@ const Profile = () => {
     e.preventDefault();
     try {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const res: any = await updateUser(formData);
+      const res: any = await updateUser('', formData);
       if (res.success) {
         toast.success(res.message);
         dispatch(setUser(res.data));
@@ -123,7 +123,7 @@ const Profile = () => {
             />
           )}
           <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 object-cover rounded-full">
-            <Icon.Edit className="text-white text-2xl" />
+            <Edit className="text-white text-2xl" />
           </div>
         </div>
         <input

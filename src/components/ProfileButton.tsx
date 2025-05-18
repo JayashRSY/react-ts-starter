@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom";
-import * as Icon from "react-feather";
 import { ISignoutResponse } from "../interfaces/IApiTypes";
 import { signout } from "../api/authApi";
-import { toast } from "react-toastify";
 import { setUser } from "../features/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useRef, useState } from "react";
-import { RootState } from "../app/store";
+import { RootState } from "../store";
+import { LogOut, User } from "lucide-react";
+import { toast } from "sonner";
 
 const ProfileButton = () => {
   const dispatch = useDispatch();
@@ -65,7 +65,7 @@ const ProfileButton = () => {
             className="h-[32px] w-[32px]"
           />
         ) : (
-          <Icon.User height={32} width={32} />
+          <User height={32} width={32} />
         )}
       </button>
 
@@ -81,7 +81,7 @@ const ProfileButton = () => {
             className="flex w-full items-center gap-2 rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700"
             role="menuitem"
           >
-            <Icon.User height={16} />
+            <User height={16} />
             Profile
           </Link>
         </div>
@@ -91,7 +91,7 @@ const ProfileButton = () => {
             onClick={handleSignout}
             className="flex w-full items-center gap-2 rounded-lg px-4 py-2 text-sm text-red-700 hover:bg-red-50"
           >
-            <Icon.LogOut height={16} />
+            <LogOut height={16} />
             Sign out
           </button>
         </div>

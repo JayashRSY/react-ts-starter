@@ -1,13 +1,12 @@
 import React, { Suspense, lazy } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 // Layout components
 import { ErrorBoundary } from './components/ErrorBoundary';
 import Header from './components/Header';
 import Loader from './components/Loader';
 import AuthRoute from './components/AuthRoute';
+import { Toaster } from 'sonner';
 
 // Auth components
 
@@ -36,18 +35,8 @@ const App: React.FC = () => {
             </Routes>
           </Suspense>
         </main>
+        <Toaster position="top-right" />
       </BrowserRouter>
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
     </ErrorBoundary>
   );
 };

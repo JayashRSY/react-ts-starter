@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { Navigate, Outlet } from "react-router-dom";
-import { RootState } from "../app/store";
+import { RootState } from "../store";
 
 const AuthRoute = () => {
   const { user } = useSelector((state: RootState) => state.auth);

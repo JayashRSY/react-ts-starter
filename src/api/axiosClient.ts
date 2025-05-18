@@ -5,7 +5,7 @@ import { store } from '../store';
 
 // Create an instance of Axios
 const axiosClient = axios.create({
-    baseURL: 'http://localhost:3000/api', // Replace with your API base URL
+    baseURL: 'http://localhost:3000/api/v1', // Replace with your API base URL
     timeout: 10000, // Set a timeout if needed
     headers: {
         'Content-Type': 'application/json',

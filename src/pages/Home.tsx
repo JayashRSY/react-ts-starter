@@ -1,11 +1,10 @@
-import { toast } from "react-toastify";
-import * as Icon from "react-feather";
+import { Camera } from "lucide-react";
 const Home = () => {
    
   return (
     <>
       <div>Home</div>
-      <Icon.Camera />
+      <Camera />
       <button onClick={() => toast("Wow so easy !")}>Notify !</button>
     </>
   );

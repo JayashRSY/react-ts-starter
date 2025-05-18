@@ -1,61 +1,21 @@
-import React, { forwardRef } from 'react';
+import * as React from "react"
 
-interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  label?: string;
-  error?: string;
-  leftIcon?: React.ReactNode;
-  rightIcon?: React.ReactNode;
-  fullWidth?: boolean;
+import { cn } from "@/lib/utils"
+
+function Input({ className, type, ...props }: React.ComponentProps<"input">) {
+  return (
+    <input
+      type={type}
+      data-slot="input"
+      className={cn(
+        "file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input flex h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
+        "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
+        "aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
+        className
+      )}
+      {...props}
+    />
+  )
 }
 
-export const Input = forwardRef<HTMLInputElement, InputProps>((
-  { 
-    label, 
-    error, 
-    leftIcon, 
-    rightIcon, 
-    fullWidth = false,
-    className = '',
-    ...props 
-  }, 
-  ref
-) => {
-  return (
-    <div className={`${fullWidth ? 'w-full' : ''}`}>
-      {label && (
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          {label}
-        </label>
-      )}
-      <div className="relative rounded-md shadow-sm">
-        {leftIcon && (
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            {leftIcon}
-          </div>
-        )}
-        <input
-          ref={ref}
-          className={`
-            block w-full rounded-md border-gray-300 shadow-sm
-            focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm
-            ${leftIcon ? 'pl-10' : ''}
-            ${rightIcon ? 'pr-10' : ''}
-            ${error ? 'border-red-300 text-red-900 placeholder-red-300 focus:border-red-500 focus:ring-red-500' : ''}
-            ${className}
-          `}
-          {...props}
-        />
-        {rightIcon && (
-          <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
-            {rightIcon}
-          </div>
-        )}
-      </div>
-      {error && (
-        <p className="mt-1 text-sm text-red-600">{error}</p>
-      )}
-    </div>
-  );
-});
-
-Input.displayName = 'Input';
+export { Input }

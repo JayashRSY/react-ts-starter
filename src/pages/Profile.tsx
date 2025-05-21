@@ -3,7 +3,7 @@ import { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { ISignoutResponse } from "../interfaces/IApiTypes";
 import { signout } from "../api/authApi";
-import { setUser } from "../features/auth/authSlice";
+import { setAccessToken, setUser } from "../features/auth/authSlice";
 import { validateImage } from "../configs/fileValidations";
 import { updateUser } from "../api/userApi";
 import { RootState } from "../store";
@@ -85,7 +85,7 @@ const Profile = () => {
       const res: ISignoutResponse = await signout();
       if (res.success) {
         dispatch(setUser(undefined));
-        localStorage.removeItem("accessToken");
+        dispatch(setAccessToken(undefined));
         window.location.reload();
         //   toast.success(res.message);
       } else {

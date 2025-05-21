@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { ISignoutResponse } from "../interfaces/IApiTypes";
 import { signout } from "../api/authApi";
-import { setUser } from "../features/auth/authSlice";
+import { setAccessToken, setUser } from "../features/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useRef, useState } from "react";
 import { RootState } from "../store";
@@ -40,7 +40,7 @@ const ProfileButton = () => {
       const res: ISignoutResponse = await signout();
       if (res.success) {
           dispatch(setUser(undefined));
-          localStorage.removeItem("accessToken");
+          dispatch(setAccessToken(undefined));
           window.location.reload();
         //   toast.success(res.message);
       } else {

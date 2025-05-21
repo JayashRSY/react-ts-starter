@@ -1,22 +1,22 @@
-import axiosClient from "./axiosClient";
+import axiosInstance from "@/lib/api/axiosInstance";
 import {
   IGoogleResponse,
   IRefreshToken,
-  ISigninResponse,
+  ILoginResponse,
   ISignoutResponse,
-  ISignupResponse,
+  IRegisterResponse,
 } from "../interfaces/IApiTypes";
 
-export const signin = async (email: string, password: string) => {
-  const response = await axiosClient.post<ISigninResponse>(
+export const login = async (email: string, password: string) => {
+  const response = await axiosInstance.post<ILoginResponse>(
     '/auth/login',
     { email, password }
   );
   return response.data;
 };
 
-export const signup = async (email: string, password: string) => {
-  const response = await axiosClient.post<ISignupResponse>(
+export const register = async (email: string, password: string) => {
+  const response = await axiosInstance.post<IRegisterResponse>(
     '/auth/register',
     { email, password }
   );
@@ -24,7 +24,7 @@ export const signup = async (email: string, password: string) => {
 };
 
 export const google = async (idToken: string) => {
-  const response = await axiosClient.post<IGoogleResponse>(
+  const response = await axiosInstance.post<IGoogleResponse>(
     '/auth/google',
     { idToken }
   );
@@ -32,25 +32,25 @@ export const google = async (idToken: string) => {
 };
 
 export const refresh = async () => {
-  const response = await axiosClient.get<IRefreshToken>('/auth/refresh');
+  const response = await axiosInstance.get<IRefreshToken>('/auth/refresh');
   return response.data;
 };
 
 export const signout = async () => {
-  const response = await axiosClient.post<ISignoutResponse>(
+  const response = await axiosInstance.post<ISignoutResponse>(
     '/auth/logout'
   );
   return response.data;
 };
 
 export const forgotPassword = async (email: string) => {
-  const response = await axiosClient.post('/auth/forgot-password', {
+  const response = await axiosInstance.post('/auth/forgot-password', {
     email,
   });
   return response.data;
 };
 export const resetPassword = async (token: string, password: string) => {
-  const response = await axiosClient.post('/auth/reset-password', {
+  const response = await axiosInstance.post('/auth/reset-password', {
     token,
     password,
   })

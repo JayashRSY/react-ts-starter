@@ -1,11 +1,11 @@
-export interface ISigninResponse {
+export interface ILoginResponse {
     success: boolean
     message: string
     accessToken: string;
-    data: IUser
+    user: IUser
 }
 
-export interface ISignupResponse {
+export interface IRegisterResponse {
     success: boolean
     message: string
 }

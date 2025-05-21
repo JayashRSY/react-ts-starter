@@ -1,16 +1,20 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { IAuthFormProps } from "../interfaces/IAuthFormProps";
-import { ISignupResponse } from "../interfaces/IApiTypes";
-import { signup } from "../api/authApi";
+import { IRegisterResponse } from "../interfaces/IApiTypes";
 import { toast } from "sonner";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/button";
 import { Mail, Lock, ArrowRight, CheckCircle } from "lucide-react";
+import { RootState } from "@/store";
+import { useSelector } from "react-redux";
+import { register } from "@/api/authApi";
 
-const SignUp = () => {
+const Register = () => {
   const navigate = useNavigate();
+  const { user } = useSelector((state: RootState) => state.auth);
+
   const [form, setForm] = useState<IAuthFormProps>({
     email: "",
     password: "",
@@ -28,7 +32,7 @@ const SignUp = () => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const res: ISignupResponse = await signup(form.email, form.password);
+      const res: IRegisterResponse = await register(form.email, form.password);
       if (res.success) {
         toast.success(res.message);
         setForm({
@@ -46,7 +50,11 @@ const SignUp = () => {
       setIsLoading(false);
     }
   };
-
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  });
   return (
     <div className="min-h-screen flex flex-col justify-center items-center p-4 bg-gradient-to-b from-background to-muted/30">
       <div className="w-full max-w-md space-y-6 p-8 bg-background rounded-xl shadow-lg border border-border relative overflow-hidden">
@@ -125,4 +133,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default Register;

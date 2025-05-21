@@ -1,20 +1,22 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { IAuthFormProps } from "../interfaces/IAuthFormProps";
-import { ISigninResponse } from "../interfaces/IApiTypes";
-import { signin } from "../api/authApi";
-import { useDispatch } from "react-redux";
-import { setUser } from "../features/auth/authSlice";
+import { ILoginResponse } from "../interfaces/IApiTypes";
+import { login } from "../api/authApi";
+import { useDispatch, useSelector } from "react-redux";
+import { setAccessToken, setUser } from "../features/auth/authSlice";
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Mail, Lock, ArrowRight } from "lucide-react";
+import { RootState } from "@/store";
 
-const SignIn = () => {
+const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { user } = useSelector((state: RootState) => state.auth);
   const [form, setForm] = useState<IAuthFormProps>({
     email: "",
     password: "",
@@ -32,26 +34,32 @@ const SignIn = () => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const res: ISigninResponse = await signin(form.email, form.password);
+      const res: ILoginResponse = await login(form.email, form.password);
       if (res.success) {
-        toast.success(res.message);
-        dispatch(setUser(res.data));
-        localStorage.setItem("accessToken", res.accessToken);
+        dispatch(setUser(res.user));
+        dispatch(setAccessToken(res.accessToken));
         setForm({
           email: "",
           password: "",
         });
+        toast.success(res.message);
         navigate("/");
       } else {
         toast.error(res.message);
       }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
-      toast.error(err.message);
+      toast.error(err.response.data.message || err.message);
     } finally {
       setIsLoading(false);
     }
   };
+  useEffect(() => {
+    if (user) {
+      console.log("🚀 ~ file: login.tsx:59 ~ user:", user)
+      navigate("/");
+    }
+  })
   return (
     <div className="min-h-screen flex flex-col justify-center items-center p-4 bg-gradient-to-b from-background to-muted/30">
       <div className="w-full max-w-md space-y-6 p-8 bg-background rounded-xl shadow-lg border border-border relative overflow-hidden">
@@ -114,7 +122,7 @@ const SignIn = () => {
             className="w-full group" 
             disabled={isLoading}
           >
-            {isLoading ? "Signing in..." : (
+            {isLoading ? "Logging in..." : (
               <>
                 Sign in
                 <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
@@ -137,7 +145,7 @@ const SignIn = () => {
         <div className="text-center">
           <p className="text-sm text-muted-foreground">
             Don&apos;t have an account?{" "}
-            <Link to="/signup" className="text-primary hover:text-primary/80 transition-colors font-medium">
+            <Link to="/register" className="text-primary hover:text-primary/80 transition-colors font-medium">
               Sign up
             </Link>
           </p>
@@ -147,4 +155,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default Login;

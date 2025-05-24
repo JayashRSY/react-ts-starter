@@ -1,10 +1,10 @@
+import { useAppSelector } from "@/hooks/useRedux";
 import { RootState } from "@/store";
-import { useSelector } from "react-redux";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { toast } from "sonner";
 
 const ProtectedRoute = () => {
-  const { user } = useSelector((state: RootState) => state.auth);
+  const { user } = useAppSelector((state: RootState) => state.auth);
   const location = useLocation();
 
   if (!user) {

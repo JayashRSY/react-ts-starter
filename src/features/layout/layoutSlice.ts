@@ -1,17 +1,18 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-export interface userState {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+export interface LayoutState {
     isLoading: boolean,
-    isMobile: boolean
+    isMobile: boolean,
+    isSidebarOpen: boolean,
 }
 
-const initialState: userState = {
+const initialState: LayoutState = {
     isLoading: false,
-    isMobile: false
+    isMobile: false,
+    isSidebarOpen: false,
 }
 
-export const userSlice = createSlice({
+export const layoutSlice = createSlice({
     name: 'layout',
     initialState,
     reducers: {
@@ -20,11 +21,17 @@ export const userSlice = createSlice({
         },
         setMobile: (state, action: PayloadAction<boolean>) => {
             state.isMobile = action.payload
-        }
+        },
+        setIsSidebarOpen: (state, action: PayloadAction<boolean>) => {
+            state.isSidebarOpen = action.payload;
+        },
+        toggleSidebar: (state) => {
+            state.isSidebarOpen = !state.isSidebarOpen;
+        },
     },
 })
 
 // Action creators are generated for each case reducer function
-export const { setLoader, setMobile } = userSlice.actions
+export const { setLoader, setMobile, setIsSidebarOpen, toggleSidebar } = layoutSlice.actions
 
-export default userSlice.reducer
+export default layoutSlice.reducer

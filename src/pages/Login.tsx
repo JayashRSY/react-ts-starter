@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { IAuthFormProps } from "../interfaces/IAuthFormProps";
 import { ILoginResponse } from "../interfaces/IApiTypes";
 import { login } from "../api/authApi";
-import { useDispatch, useSelector } from "react-redux";
 import { setAccessToken, setUser } from "../features/auth/authSlice";
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/Input";
@@ -12,11 +11,13 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Mail, Lock, ArrowRight } from "lucide-react";
 import { RootState } from "@/store";
+import { useAppSelector } from "@/hooks/useRedux";
+import { useAppDispatch } from "@/hooks/useRedux";
 
 const Login = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { user } = useSelector((state: RootState) => state.auth);
+  const { user } = useAppSelector((state: RootState) => state.auth);
   const [form, setForm] = useState<IAuthFormProps>({
     email: "",
     password: "",

@@ -1,9 +1,9 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import { RootState } from "../store";
+import { useAppSelector } from "@/hooks/useRedux";
 
 const Loader: React.FC = () => {
-  const { isLoading } = useSelector((state: RootState) => state.layout);
+  const { isLoading } = useAppSelector((state: RootState) => state.layout);
   return (
     <>
       {isLoading ? (

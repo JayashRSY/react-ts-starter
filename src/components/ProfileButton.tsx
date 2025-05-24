@@ -2,15 +2,15 @@ import { Link } from "react-router-dom";
 import { ISignoutResponse } from "../interfaces/IApiTypes";
 import { signout } from "../api/authApi";
 import { setAccessToken, setUser } from "../features/auth/authSlice";
-import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useRef, useState } from "react";
 import { RootState } from "../store";
 import { LogOut, User } from "lucide-react";
 import { toast } from "sonner";
+import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
 
 const ProfileButton = () => {
-  const dispatch = useDispatch();
-  const { user } = useSelector((state: RootState) => state.auth);
+  const dispatch = useAppDispatch();
+  const { user } = useAppSelector((state: RootState) => state.auth);
 
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);

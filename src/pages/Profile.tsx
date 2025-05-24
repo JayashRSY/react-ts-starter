@@ -1,6 +1,4 @@
-import { useSelector } from "react-redux";
 import { useRef, useState } from "react";
-import { useDispatch } from "react-redux";
 import { ISignoutResponse } from "../interfaces/IApiTypes";
 import { signout } from "../api/authApi";
 import { setAccessToken, setUser } from "../features/auth/authSlice";
@@ -9,12 +7,13 @@ import { updateUser } from "../api/userApi";
 import { RootState } from "../store";
 import { Edit } from "lucide-react";
 import { toast } from "sonner";
+import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
 
 const Profile = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const { user } = useSelector((state: RootState) => state.auth);
-  const { isLoading } = useSelector((state: RootState) => state.layout);
+  const { user } = useAppSelector((state: RootState) => state.auth);
+  const { isLoading } = useAppSelector((state: RootState) => state.layout);
   const [imgLoader, setImgLoader] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);

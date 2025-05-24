@@ -8,12 +8,12 @@ import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/button";
 import { Mail, Lock, ArrowRight, CheckCircle } from "lucide-react";
 import { RootState } from "@/store";
-import { useSelector } from "react-redux";
 import { register } from "@/api/authApi";
+import { useAppSelector } from "@/hooks/useRedux";
 
 const Register = () => {
   const navigate = useNavigate();
-  const { user } = useSelector((state: RootState) => state.auth);
+  const { user } = useAppSelector((state: RootState) => state.auth);
 
   const [form, setForm] = useState<IAuthFormProps>({
     email: "",

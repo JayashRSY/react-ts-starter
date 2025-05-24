@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useSelector } from "react-redux";
 import { RootState } from "@/store";
+import { useAppSelector } from "@/hooks/useRedux";
 
 const AdminDashboard = () => {
-  const { user } = useSelector((state: RootState) => state.auth);
+  const { user } = useAppSelector((state: RootState) => state.auth);
   const [activeTab, setActiveTab] = useState("overview");
 
   // Check if user has admin role

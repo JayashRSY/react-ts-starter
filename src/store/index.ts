@@ -6,12 +6,13 @@ import storage from 'redux-persist/lib/storage';
 import authReducer from '../features/auth/authSlice';
 import layoutReducer from '../features/layout/layoutSlice';
 import counterReducer from '../features/counter/counterSlice';
+import themeReducer from '../features/theme/themeSlice';
 
 // Define the persist configuration
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['auth'], // Only persist auth state
+  whitelist: ['auth', 'theme'], // Only persist auth and theme state
 };
 
 // Combine reducers into a root reducer
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
   auth: authReducer,
   layout: layoutReducer,
   counter: counterReducer,
+  theme: themeReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

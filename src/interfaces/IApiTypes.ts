@@ -24,7 +24,7 @@ export interface IGoogleResponse {
     data: IUser
 }
 
-export interface ISignoutResponse {
+export interface ILogoutResponse {
     success: boolean
     message: string
 }

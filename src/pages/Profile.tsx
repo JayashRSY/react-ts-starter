@@ -1,29 +1,16 @@
 import { useRef, useState } from "react";
-import { ISignoutResponse } from "../interfaces/IApiTypes";
-import { signout } from "../api/authApi";
-import { setAccessToken, setUser } from "../features/auth/authSlice";
 import { validateImage } from "../configs/fileValidations";
 import { updateUser } from "../api/userApi";
-import { RootState } from "../store";
 import { Edit } from "lucide-react";
 import { toast } from "sonner";
-import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
+import { useAuth } from "@/hooks/useAuth";
 
 const Profile = () => {
-  const dispatch = useAppDispatch();
-
-  const { user } = useAppSelector((state: RootState) => state.auth);
-  const { isLoading } = useAppSelector((state: RootState) => state.layout);
+  const { user, logout } = useAuth();
   const [imgLoader, setImgLoader] = useState(false);
-
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  const [formData, setFormData] = useState<{
-    name: string;
-    email: string;
-    password: string;
-    profilePicture: string;
-  }>({
+  const [formData, setFormData] = useState({
     name: user?.name || "",
     email: user?.email || "",
     password: "",
@@ -41,30 +28,25 @@ const Profile = () => {
         return;
       }
       const fileName = new Date().getTime() + file.name;
-      console.log("🚀 ~ file: Profile.tsx:45 ~ fileName:", fileName)
+      console.log("🚀 ~ file: Profile.tsx:45 ~ fileName:", fileName);
     }
     setImgLoader(false);
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleChange = (e: any) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     try {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const res: any = await updateUser('', formData);
+      const res: any = await updateUser("", formData);
       if (res.success) {
         toast.success(res.message);
-        dispatch(setUser(res.data));
+        // Optionally, you can refresh user info here
       } else {
         toast.error(res.message);
       }
-
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       toast.error(err.message);
     }
@@ -73,28 +55,23 @@ const Profile = () => {
   const handleDeleteAccount = async () => {
     try {
       toast("Account Deleted");
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       toast.error(err.message);
     }
   };
 
-  const handleSignout = async () => {
+  const handleLogout = async () => {
     try {
-      const res: ISignoutResponse = await signout();
-      if (res.success) {
-        dispatch(setUser(undefined));
-        dispatch(setAccessToken(undefined));
-        window.location.reload();
-        //   toast.success(res.message);
-      } else {
-        toast.error(res.message);
-      }
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      await logout();
     } catch (err: any) {
       toast.error(err.message);
     }
   };
+
+  if (!user) {
+    return null;
+  }
+
   return (
     <div className="p-3 max-w-lg mx-auto">
       <h1 className="text-3xl font-semibold text-center my-7">Profile</h1>
@@ -153,10 +130,9 @@ const Profile = () => {
         />
         <button
           type="submit"
-          disabled={isLoading}
           className="bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
         >
-          {isLoading ? "Loading..." : "Update"}
+          Update
         </button>
       </form>
       <div className="flex justify-between mt-5">
@@ -166,11 +142,12 @@ const Profile = () => {
         >
           Delete Account
         </span>
-        <span onClick={handleSignout} className="text-red-700 cursor-pointer">
-          Sign out
+        <span onClick={handleLogout} className="text-red-700 cursor-pointer">
+          Logout
         </span>
       </div>
     </div>
   );
 };
+
 export default Profile;

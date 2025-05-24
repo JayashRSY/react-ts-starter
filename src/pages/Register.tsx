@@ -45,7 +45,7 @@ const Register = () => {
       }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
-      toast.error(err.message);
+      toast.error(err.response?.data?.message || err.message);
     } finally {
       setIsLoading(false);
     }
@@ -56,14 +56,14 @@ const Register = () => {
     }
   });
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center p-4 bg-gradient-to-b from-background to-muted/30">
+    <div className="min-h-screen flex flex-col justify-center items-center p-4 bg-muted/40">
       <div className="w-full max-w-md space-y-6 p-8 bg-background rounded-xl shadow-lg border border-border relative overflow-hidden">
         {/* Decorative elements */}
         <div className="absolute -top-10 -right-10 w-40 h-40 bg-primary/10 rounded-full blur-2xl" />
         <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-secondary/10 rounded-full blur-2xl" />
         
         <div className="text-center relative">
-          <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">Atoot</h1>
+          <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">Wealth Wings</h1>
           <p className="text-muted-foreground mt-2">Create your account</p>
         </div>
 
@@ -124,7 +124,7 @@ const Register = () => {
           <p className="text-sm text-muted-foreground">
             Already have an account?{" "}
             <Link to="/login" className="text-primary hover:text-primary/80 transition-colors font-medium">
-              Sign in
+              Login
             </Link>
           </p>
         </div>

@@ -3,7 +3,7 @@ import {
   IGoogleResponse,
   IRefreshToken,
   ILoginResponse,
-  ISignoutResponse,
+  ILogoutResponse,
   IRegisterResponse,
 } from "../interfaces/IApiTypes";
 
@@ -36,8 +36,8 @@ export const refresh = async () => {
   return response.data;
 };
 
-export const signout = async () => {
-  const response = await axiosInstance.post<ISignoutResponse>(
+export const logout = async () => {
+  const response = await axiosInstance.post<ILogoutResponse>(
     '/auth/logout'
   );
   return response.data;

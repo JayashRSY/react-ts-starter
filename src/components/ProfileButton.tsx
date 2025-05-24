@@ -1,17 +1,11 @@
 import { Link } from "react-router-dom";
-import { ISignoutResponse } from "../interfaces/IApiTypes";
-import { signout } from "../api/authApi";
-import { setAccessToken, setUser } from "../features/auth/authSlice";
 import { useEffect, useRef, useState } from "react";
-import { RootState } from "../store";
 import { LogOut, User } from "lucide-react";
 import { toast } from "sonner";
-import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
+import { useAuth } from "@/hooks/useAuth";
 
 const ProfileButton = () => {
-  const dispatch = useAppDispatch();
-  const { user } = useAppSelector((state: RootState) => state.auth);
-
+  const { user, logout } = useAuth();
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -29,74 +23,48 @@ const ProfileButton = () => {
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
-
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
-  const handleSignout = async () => {
+  const handleLogout = async () => {
     try {
-      const res: ISignoutResponse = await signout();
-      if (res.success) {
-          dispatch(setUser(undefined));
-          dispatch(setAccessToken(undefined));
-          window.location.reload();
-        //   toast.success(res.message);
-      } else {
-        toast.error(res.message);
-      }
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      await logout();
     } catch (err: any) {
       toast.error(err.message);
     }
   };
 
+  if (!user) {
+    return null;
+  }
+
   return (
     <div className="relative" ref={dropdownRef}>
-      <button
-        className="inline-flex items-center overflow-hidden rounded-full border bg-white"
-        onClick={toggleDropdown}
-      >
-        {user?.profilePicture ? (
-          <img
-            src={user?.profilePicture}
-            alt="profile picture"
-            className="h-[32px] w-[32px]"
-          />
-        ) : (
-          <User height={32} width={32} />
-        )}
+      <button onClick={toggleDropdown} className="flex items-center gap-2">
+        <User className="h-5 w-5" />
+        <span>{user.name || user.email}</span>
       </button>
-
-      <div
-        className={`absolute end-0 z-10 mt-2 w-56 divide-y divide-gray-100 rounded-md border border-gray-100 bg-white shadow-lg ${
-          isDropdownVisible ? "block" : "hidden"
-        }`}
-        role="menu"
-      >
-        <div className="p-2">
+      {isDropdownVisible && (
+        <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded shadow-lg z-10">
           <Link
             to="/profile"
-            className="flex w-full items-center gap-2 rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700"
-            role="menuitem"
+            className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
           >
-            <User height={16} />
             Profile
           </Link>
-        </div>
-
-        <div className="p-2">
           <button
-            onClick={handleSignout}
-            className="flex w-full items-center gap-2 rounded-lg px-4 py-2 text-sm text-red-700 hover:bg-red-50"
+            onClick={handleLogout}
+            className="block w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
           >
-            <LogOut height={16} />
-            Sign out
+            <LogOut className="inline-block mr-2 h-4 w-4" />
+            Logout
           </button>
         </div>
-      </div>
+      )}
     </div>
   );
 };
+
 export default ProfileButton;

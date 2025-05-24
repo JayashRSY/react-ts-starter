@@ -2,14 +2,16 @@ import { RootState } from "../store";
 import { setAccessToken, setUser } from "../features/auth/authSlice";
 import { useCallback, useEffect, useState } from "react";
 import { IUser } from "../interfaces/IApiTypes";
-import axios from "axios";
 import axiosInstance from "@/lib/api/axiosInstance";
 import { useAppSelector } from "./useRedux";
+import { login as loginApi, logout as logoutApi } from "../api/authApi";
 
 import { useAppDispatch } from "./useRedux";
 export const useAuth = () => {
   const dispatch = useAppDispatch();
-  const accessToken = useAppSelector((state: RootState) => state.auth.accessToken);
+  const accessToken = useAppSelector(
+    (state: RootState) => state.auth.accessToken
+  );
   const user = useAppSelector((state: RootState) => state.auth.user);
   const [loading, setLoading] = useState(true);
   const [authError, setAuthError] = useState<null | string>(null);
@@ -30,11 +32,9 @@ export const useAuth = () => {
   const login = useCallback(
     async (credentials: { email: string; password: string }) => {
       try {
-        const res = await axiosInstance.post("/auth/login", credentials, {
-          withCredentials: true,
-        });
+        const res = await loginApi(credentials.email, credentials.password);
 
-        const { accessToken, user } = res.data;
+        const { accessToken, user } = res;
         dispatch(setAccessToken(accessToken));
         dispatch(setUser(user));
         setAuthError(null);
@@ -47,7 +47,7 @@ export const useAuth = () => {
 
   const logout = useCallback(async () => {
     try {
-      await axios.post("/auth/logout", {}, { withCredentials: true });
+      await logoutApi();
     } catch {
       // Ignore failure
     }

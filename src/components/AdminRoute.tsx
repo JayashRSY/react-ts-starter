@@ -7,7 +7,7 @@ const AdminRoute = () => {
   const { user } = useAppSelector((state: RootState) => state.auth);
 
   if (!user) {
-    toast.error("Please sign in to access this page");
+    toast.error("Please login in to access this page");
     return <Navigate to="/login" replace />;
   }
 

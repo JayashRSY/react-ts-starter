@@ -11,14 +11,12 @@ import {
 import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
 import { User as UserIcon } from "lucide-react";
 import { Button } from "../ui/button";
-import { RootState } from "@/store";
 import ThemeButton from "./ThemeButton";
-import { useAppSelector } from "@/hooks/useRedux";
-
+import { useAuth } from "@/hooks/useAuth";
 
 const Navbar: React.FC = () => {
   const navigate = useNavigate();
-  const { user } = useAppSelector((state: RootState) => state.auth);
+  const { user, logout } = useAuth();
 
   return (
     <header className="flex items-center justify-between px-6 py-4 shadow-md bg-background border-b border-border">
@@ -39,8 +37,8 @@ const Navbar: React.FC = () => {
             <DropdownMenu>
               <DropdownMenuTrigger className="outline-none">
                 <Avatar className="h-8 w-8 cursor-pointer">
-                  {user?.user_metadata?.avatar_url ? (
-                    <AvatarImage src={user.user_metadata.avatar_url} />
+                  {user.profilePicture ? (
+                    <AvatarImage src={user.profilePicture} />
                   ) : (
                     <AvatarFallback>
                       <UserIcon className="h-5 w-5" />
@@ -52,7 +50,7 @@ const Navbar: React.FC = () => {
                 <div className="flex items-center justify-start gap-2 p-2">
                   <div className="flex flex-col space-y-1">
                     <p className="text-sm font-medium leading-none">
-                      {user.user_metadata?.full_name || user.email}
+                      {user.name || user.email}
                     </p>
                     <p className="text-xs leading-none text-muted-foreground">
                       {user.email}
@@ -66,13 +64,15 @@ const Navbar: React.FC = () => {
                 <DropdownMenuItem onClick={() => navigate("/dashboard")}>
                   Dashboard
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => navigate("/dashboard/settings")}>
+                <DropdownMenuItem
+                  onClick={() => navigate("/dashboard/settings")}
+                >
                   Settings
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
                   className="text-destructive focus:text-destructive"
-                  // onClick={logout}
+                  onClick={logout}
                 >
                   Log out
                 </DropdownMenuItem>
@@ -81,9 +81,9 @@ const Navbar: React.FC = () => {
           </div>
         ) : (
           <div className="flex items-center space-x-4">
-            {/* <ThemeButton /> */}
+            <ThemeButton />
             <Button onClick={() => navigate("/login")}>Login</Button>
-            <Button onClick={() => navigate("/signup")}>Signup</Button>
+            <Button onClick={() => navigate("/register")}>Register</Button>
           </div>
         )}
       </nav>

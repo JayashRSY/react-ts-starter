@@ -1,15 +1,19 @@
-import axios, { AxiosError, AxiosRequestConfig, InternalAxiosRequestConfig } from 'axios';
-import { store } from '../../store';
-import { setAccessToken, setUser } from '../../features/auth/authSlice';
-import { RefreshResponse } from '../../interfaces/IAuthTypes';
-import { jwtDecode } from 'jwt-decode';
+import axios, {
+  AxiosError,
+  AxiosRequestConfig,
+  InternalAxiosRequestConfig,
+} from "axios";
+import { store } from "../../store";
+import { setAccessToken, setUser } from "../../features/auth/authSlice";
+import { RefreshResponse } from "../../interfaces/IAuthTypes";
+import { jwtDecode } from "jwt-decode";
 
 // Create axios instance
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:3000/api/v1',
+  baseURL: "http://localhost:3000/api/v1",
   timeout: 10000,
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   },
   withCredentials: true, // Important for sending cookies with requests
 });
@@ -23,8 +27,11 @@ let failedRequestsQueue: {
 
 const processQueue = (error: Error | null, token: string | null = null) => {
   failedRequestsQueue.forEach(({ resolve, reject }) => {
-    if (error) reject(error);
-    else if (token) resolve(token);
+    if (error) {
+      reject(error);
+    } else if (token) {
+      resolve(token);
+    }
   });
   failedRequestsQueue = [];
 };
@@ -43,14 +50,18 @@ const getTokenExpiry = (token: string): number | null => {
 let refreshTimeout: NodeJS.Timeout | null = null;
 const setupTokenRefresh = (token: string) => {
   const expiry = getTokenExpiry(token);
-  console.log("🚀 ~ file: axiosInstance.ts:46 ~ expiry:", expiry)
-  if (!expiry) return;
+  console.log("🚀 ~ file: axiosInstance.ts:46 ~ expiry:", expiry);
+  if (!expiry) {
+    return;
+  }
 
   const now = Date.now();
   const refreshIn = expiry - now - 60_000; // Refresh 1 min before expiry
-  console.log("🚀 ~ file: axiosInstance.ts:50 ~ refreshIn:", refreshIn)
+  console.log("🚀 ~ file: axiosInstance.ts:50 ~ refreshIn:", refreshIn);
 
-  if (refreshTimeout) clearTimeout(refreshTimeout);
+  if (refreshTimeout) {
+    clearTimeout(refreshTimeout);
+  }
 
   if (refreshIn > 0) {
     refreshTimeout = setTimeout(() => {
@@ -62,9 +73,13 @@ const setupTokenRefresh = (token: string) => {
 // Manual refresh call
 const refreshAccessToken = async () => {
   try {
-    const response = await axiosInstance.post<RefreshResponse>('/api/auth/refresh', {}, {
-      withCredentials: true,
-    });
+    const response = await axiosInstance.post<RefreshResponse>(
+      "/api/auth/refresh",
+      {},
+      {
+        withCredentials: true,
+      }
+    );
 
     const { accessToken, data: user } = response.data;
 
@@ -77,7 +92,7 @@ const refreshAccessToken = async () => {
   } catch (err) {
     store.dispatch(setAccessToken(undefined));
     store.dispatch(setUser(undefined));
-    window.location.href = '/login';
+    window.location.href = "/login";
     throw err;
   }
 };
@@ -98,10 +113,15 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
   (response) => response,
   async (error: AxiosError) => {
-    const originalRequest = error.config as AxiosRequestConfig & { _retry?: boolean };
+    const originalRequest = error.config as AxiosRequestConfig & {
+      _retry?: boolean;
+    };
 
     // Avoid refresh loop
-    if (originalRequest.url?.includes('/auth/login') || originalRequest.url?.includes('/auth/register')) {
+    if (
+      originalRequest.url?.includes("/auth/login") ||
+      originalRequest.url?.includes("/auth/register")
+    ) {
       return Promise.reject(error);
     }
 

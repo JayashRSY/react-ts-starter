@@ -1,9 +1,13 @@
-import { Outlet } from 'react-router-dom'
+import { PageBreadcrumb } from "@/components/layout/PageBreadcrumb";
+import { Outlet } from "react-router-dom";
 
 const DashboardLayout = () => {
   return (
-    <Outlet />
-  )
-}
+    <>
+      <PageBreadcrumb />
+      <Outlet />
+    </>
+  );
+};
 
-export default DashboardLayout
+export default DashboardLayout;

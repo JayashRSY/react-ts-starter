@@ -13,7 +13,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { ArrowUpRight, ArrowDownRight, Wallet, CreditCard, PiggyBank, TrendingUp, FileText, Download, Eye, Calendar } from "lucide-react";
 import { useAuth } from '@/hooks/useAuth';
 import { format } from 'date-fns';
-import { Link, Outlet } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import {
   Table,
   TableBody,
@@ -339,8 +339,6 @@ const Dashboard = () => {
           </Card>
         </TabsContent>
       </Tabs>
-      {/* Add Outlet for nested routes */}
-      <Outlet />
     </div>
   );
 };

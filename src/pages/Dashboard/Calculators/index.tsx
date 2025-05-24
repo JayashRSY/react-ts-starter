@@ -14,7 +14,7 @@ import {
   Building,
   ChevronRight
 } from "lucide-react";
-import { Link, Outlet } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const calculators = [
   {
@@ -159,7 +159,6 @@ export default function CalculatorsPage() {
           </Link>
         ))}
       </div>
-      <Outlet />
     </div>
   );
 }

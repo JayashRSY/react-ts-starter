@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
-import { validateImage } from "../configs/fileValidations";
-import { updateUser } from "../api/userApi";
+import { validateImage } from "../../configs/fileValidations";
+import { updateUser } from "../../api/userApi";
 import { Edit } from "lucide-react";
 import { toast } from "sonner";
 import { useAuth } from "@/hooks/useAuth";

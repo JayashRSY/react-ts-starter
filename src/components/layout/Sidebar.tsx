@@ -77,22 +77,22 @@ const Sidebar: React.FC = () => {
       color: "text-purple-500",
     },
     {
-      label: "Credit Card",
+      label: "Cards",
       href: "/",
       icon: <CreditCard className="w-5 h-5" />,
       color: "text-green-500",
       subItems: [
         {
           label: "Recommender",
-          href: "/credit-card",
+          href: "cards/recommender",
         },
         {
           label: "Upload Statement",
-          href: "/credit-card/statement-upload",
+          href: "cards/statement-upload",
         },
         {
           label: "Statement History",
-          href: "/credit-card/statement-history",
+          href: "cards/statement-history",
         },
       ],
     },

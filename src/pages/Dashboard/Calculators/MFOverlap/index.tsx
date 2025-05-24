@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { LineChart, HelpCircle, Search, Download } from "lucide-react";
@@ -56,8 +56,10 @@ export default function MutualFundOverlapCalculator() {
     fund2: null,
   });
 
-  const [searchTerm, setSearchTerm] = useState('');
-  const [overlapResult, setOverlapResult] = useState<OverlapResult | null>(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [overlapResult, setOverlapResult] = useState<OverlapResult | null>(
+    null
+  );
 
   // Sample mutual fund data (in real app, this would come from an API)
   const sampleFunds: Fund[] = [
@@ -68,8 +70,8 @@ export default function MutualFundOverlapCalculator() {
       holdings: [
         { stock: "HDFC Bank", weight: 8.5 },
         { stock: "ICICI Bank", weight: 7.2 },
-        { stock: "Infosys", weight: 6.8 }
-      ]
+        { stock: "Infosys", weight: 6.8 },
+      ],
     },
     {
       id: "2",
@@ -78,35 +80,42 @@ export default function MutualFundOverlapCalculator() {
       holdings: [
         { stock: "HDFC Bank", weight: 9.1 },
         { stock: "TCS", weight: 7.5 },
-        { stock: "Infosys", weight: 7.0 }
-      ]
-    }
+        { stock: "Infosys", weight: 7.0 },
+      ],
+    },
   ];
 
   const calculateOverlap = () => {
-    if (!selectedFunds.fund1 || !selectedFunds.fund2) return;
+    if (!selectedFunds.fund1 || !selectedFunds.fund2) {
+      return;
+    }
 
-    const fund1 = sampleFunds.find(f => f.id === selectedFunds.fund1);
-    const fund2 = sampleFunds.find(f => f.id === selectedFunds.fund2);
+    const fund1 = sampleFunds.find((f) => f.id === selectedFunds.fund1);
+    const fund2 = sampleFunds.find((f) => f.id === selectedFunds.fund2);
 
-    if (!fund1 || !fund2) return;
+    if (!fund1 || !fund2) {
+      return;
+    }
 
-    const commonStocks = fund1.holdings.filter(h1 => 
-      fund2.holdings.some(h2 => h2.stock === h1.stock)
+    const commonStocks = fund1.holdings.filter((h1) =>
+      fund2.holdings.some((h2) => h2.stock === h1.stock)
     );
 
-    const overlapPercentage = (commonStocks.length / 
-      Math.min(fund1.holdings.length, fund2.holdings.length)) * 100;
+    const overlapPercentage =
+      (commonStocks.length /
+        Math.min(fund1.holdings.length, fund2.holdings.length)) *
+      100;
 
-    const commonHoldings = commonStocks.map(h1 => ({
+    const commonHoldings = commonStocks.map((h1) => ({
       stock: h1.stock,
       weightFund1: h1.weight,
-      weightFund2: fund2.holdings.find(h2 => h2.stock === h1.stock)?.weight || 0
+      weightFund2:
+        fund2.holdings.find((h2) => h2.stock === h1.stock)?.weight || 0,
     }));
 
     setOverlapResult({
       overlapPercentage,
-      commonHoldings
+      commonHoldings,
     });
   };
 
@@ -163,16 +172,16 @@ export default function MutualFundOverlapCalculator() {
                   <div>
                     <Label>Fund 1</Label>
                     <Select
-                      value={selectedFunds.fund1 || ''}
-                      onValueChange={(value) => 
-                        setSelectedFunds(prev => ({ ...prev, fund1: value }))
+                      value={selectedFunds.fund1 || ""}
+                      onValueChange={(value) =>
+                        setSelectedFunds((prev) => ({ ...prev, fund1: value }))
                       }
                     >
                       <SelectTrigger>
                         <SelectValue placeholder="Select first fund" />
                       </SelectTrigger>
                       <SelectContent>
-                        {sampleFunds.map(fund => (
+                        {sampleFunds.map((fund) => (
                           <SelectItem key={fund.id} value={fund.id}>
                             {fund.name}
                           </SelectItem>
@@ -184,16 +193,16 @@ export default function MutualFundOverlapCalculator() {
                   <div>
                     <Label>Fund 2</Label>
                     <Select
-                      value={selectedFunds.fund2 || ''}
-                      onValueChange={(value) => 
-                        setSelectedFunds(prev => ({ ...prev, fund2: value }))
+                      value={selectedFunds.fund2 || ""}
+                      onValueChange={(value) =>
+                        setSelectedFunds((prev) => ({ ...prev, fund2: value }))
                       }
                     >
                       <SelectTrigger>
                         <SelectValue placeholder="Select second fund" />
                       </SelectTrigger>
                       <SelectContent>
-                        {sampleFunds.map(fund => (
+                        {sampleFunds.map((fund) => (
                           <SelectItem key={fund.id} value={fund.id}>
                             {fund.name}
                           </SelectItem>
@@ -231,7 +240,9 @@ export default function MutualFundOverlapCalculator() {
               {overlapResult ? (
                 <div className="space-y-6">
                   <div className="p-4 bg-blue-50 rounded-lg">
-                    <h3 className="font-semibold text-blue-700">Overlap Percentage</h3>
+                    <h3 className="font-semibold text-blue-700">
+                      Overlap Percentage
+                    </h3>
                     <p className="text-3xl font-bold text-blue-600">
                       {overlapResult.overlapPercentage.toFixed(1)}%
                     </p>
@@ -251,8 +262,12 @@ export default function MutualFundOverlapCalculator() {
                         {overlapResult.commonHoldings.map((holding) => (
                           <TableRow key={holding.stock}>
                             <TableCell>{holding.stock}</TableCell>
-                            <TableCell>{holding.weightFund1.toFixed(2)}%</TableCell>
-                            <TableCell>{holding.weightFund2.toFixed(2)}%</TableCell>
+                            <TableCell>
+                              {holding.weightFund1.toFixed(2)}%
+                            </TableCell>
+                            <TableCell>
+                              {holding.weightFund2.toFixed(2)}%
+                            </TableCell>
                           </TableRow>
                         ))}
                       </TableBody>
@@ -270,9 +285,9 @@ export default function MutualFundOverlapCalculator() {
 
         <div className="text-center text-sm text-gray-500 mt-8">
           <p>
-            Note: This analysis is based on the latest available portfolio disclosures. 
-            Actual fund holdings may vary. Consider consulting a financial advisor before 
-            making investment decisions.
+            Note: This analysis is based on the latest available portfolio
+            disclosures. Actual fund holdings may vary. Consider consulting a
+            financial advisor before making investment decisions.
           </p>
         </div>
       </div>

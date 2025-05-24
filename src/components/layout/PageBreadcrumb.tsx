@@ -7,6 +7,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import React from "react";
 
 export function PageBreadcrumb() {
   const location = useLocation();
@@ -41,22 +42,20 @@ export function PageBreadcrumb() {
   return (
     <Breadcrumb className="m-6">
       <BreadcrumbList>
-        {breadcrumbItems.map(
-          (item: { href: string; label: string; isLast: boolean }) => (
-            <BreadcrumbItem key={item.href}>
+        {breadcrumbItems.map((item: { href: string; label: string; isLast: boolean }) => (
+          <React.Fragment key={item.href}>
+            <BreadcrumbItem>
               {item.isLast ? (
                 <BreadcrumbPage>{item.label}</BreadcrumbPage>
               ) : (
-                <>
-                  <BreadcrumbLink asChild>
-                    <Link to={item.href}>{item.label}</Link>
-                  </BreadcrumbLink>
-                  <BreadcrumbSeparator />
-                </>
+                <BreadcrumbLink asChild>
+                  <Link to={item.href}>{item.label}</Link>
+                </BreadcrumbLink>
               )}
             </BreadcrumbItem>
-          )
-        )}
+            {!item.isLast && <BreadcrumbSeparator />}
+          </React.Fragment>
+        ))}
       </BreadcrumbList>
     </Breadcrumb>
   );

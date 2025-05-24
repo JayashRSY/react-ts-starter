@@ -1,12 +1,10 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
 import { TrendingUp, HelpCircle, AlertCircle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Resolver, useForm } from "react-hook-form";
@@ -18,6 +16,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { Input } from "@/components/ui/Input";
+import { Switch } from "@/components/ui/switch";
 
 // Form schema validation
 const formSchema = z.object({
@@ -37,7 +37,7 @@ export default function TaxRegimeCalculator() {
     oldRegime: number;
     newRegime: number;
     difference: number;
-    winner: 'old' | 'new';
+    winner: "old" | "new";
   } | null>(null);
 
   const { register, handleSubmit } = useForm<FormData>({
@@ -49,38 +49,51 @@ export default function TaxRegimeCalculator() {
       deduction80D: 0,
       homeLoanInterest: 0,
       otherDeductions: 0,
-    }
+    },
   });
 
   const calculateTax = (income: number, isNewRegime: boolean) => {
     let tax = 0;
     if (isNewRegime) {
       // New Tax Regime Slabs 2023-24
-      if (income <= 300000) tax = 0;
-      else if (income <= 600000) tax = (income - 300000) * 0.05;
-      else if (income <= 900000) tax = 15000 + (income - 600000) * 0.1;
-      else if (income <= 1200000) tax = 45000 + (income - 900000) * 0.15;
-      else if (income <= 1500000) tax = 90000 + (income - 1200000) * 0.2;
-      else tax = 150000 + (income - 1500000) * 0.3;
+      if (income <= 300000) {
+        tax = 0;
+      } else if (income <= 600000) {
+        tax = (income - 300000) * 0.05;
+      } else if (income <= 900000) {
+        tax = 15000 + (income - 600000) * 0.1;
+      } else if (income <= 1200000) {
+        tax = 45000 + (income - 900000) * 0.15;
+      } else if (income <= 1500000) {
+        tax = 90000 + (income - 1200000) * 0.2;
+      } else {
+        tax = 150000 + (income - 1500000) * 0.3;
+      }
+    } else if (income <= 250000) {
+      tax = 0;
+    } else if (income <= 500000) {
+      tax = (income - 250000) * 0.05;
+    } else if (income <= 1000000) {
+      tax = 12500 + (income - 500000) * 0.2;
     } else {
-      // Old Tax Regime Slabs
-      if (income <= 250000) tax = 0;
-      else if (income <= 500000) tax = (income - 250000) * 0.05;
-      else if (income <= 1000000) tax = 12500 + (income - 500000) * 0.2;
-      else tax = 112500 + (income - 1000000) * 0.3;
+      tax = 112500 + (income - 1000000) * 0.3;
     }
     return Math.round(tax);
   };
 
   const onSubmit = (data: FormData) => {
-    const totalDeductions = data.standardDeduction + 
-      (data.hra || 0) + 
-      (data.deduction80C || 0) + 
-      (data.deduction80D || 0) + 
-      (data.homeLoanInterest || 0) + 
+    const totalDeductions =
+      data.standardDeduction +
+      (data.hra || 0) +
+      (data.deduction80C || 0) +
+      (data.deduction80D || 0) +
+      (data.homeLoanInterest || 0) +
       (data.otherDeductions || 0);
 
-    const oldRegimeTaxableIncome = Math.max(0, data.grossIncome - totalDeductions);
+    const oldRegimeTaxableIncome = Math.max(
+      0,
+      data.grossIncome - totalDeductions
+    );
     const newRegimeTaxableIncome = data.grossIncome;
 
     const oldRegimeTax = calculateTax(oldRegimeTaxableIncome, false);
@@ -91,7 +104,7 @@ export default function TaxRegimeCalculator() {
       oldRegime: oldRegimeTax,
       newRegime: newRegimeTax,
       difference: Math.abs(difference),
-      winner: difference > 0 ? 'new' : 'old'
+      winner: difference > 0 ? "new" : "old",
     });
   };
 
@@ -134,19 +147,21 @@ export default function TaxRegimeCalculator() {
                   <Input
                     id="grossIncome"
                     type="number"
-                    {...register('grossIncome', { valueAsNumber: true })}
+                    {...register("grossIncome", { valueAsNumber: true })}
                   />
                 </div>
 
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <Label htmlFor="standardDeduction">Standard Deduction (₹)</Label>
+                    <Label htmlFor="standardDeduction">
+                      Standard Deduction (₹)
+                    </Label>
                     <Switch id="enableStandardDeduction" defaultChecked />
                   </div>
                   <Input
                     id="standardDeduction"
                     type="number"
-                    {...register('standardDeduction', { valueAsNumber: true })}
+                    {...register("standardDeduction", { valueAsNumber: true })}
                   />
                 </div>
 
@@ -156,7 +171,7 @@ export default function TaxRegimeCalculator() {
                   <Input
                     id="hra"
                     type="number"
-                    {...register('hra', { valueAsNumber: true })}
+                    {...register("hra", { valueAsNumber: true })}
                   />
                 </div>
 
@@ -166,7 +181,7 @@ export default function TaxRegimeCalculator() {
                     id="deduction80C"
                     type="number"
                     max={150000}
-                    {...register('deduction80C', { valueAsNumber: true })}
+                    {...register("deduction80C", { valueAsNumber: true })}
                   />
                 </div>
 
@@ -188,21 +203,31 @@ export default function TaxRegimeCalculator() {
                   <CardHeader>
                     <CardTitle className="flex items-center justify-between">
                       <span>Calculation Results</span>
-                      <Badge variant={result.winner === 'new' ? 'default' : 'secondary'}>
-                        {result.winner === 'new' ? 'New Regime Better' : 'Old Regime Better'}
+                      <Badge
+                        variant={
+                          result.winner === "new" ? "default" : "secondary"
+                        }
+                      >
+                        {result.winner === "new"
+                          ? "New Regime Better"
+                          : "Old Regime Better"}
                       </Badge>
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-6">
                     <div className="grid grid-cols-2 gap-4">
                       <div className="p-4 bg-blue-50 rounded-lg">
-                        <h3 className="font-semibold text-blue-700">Old Regime Tax</h3>
+                        <h3 className="font-semibold text-blue-700">
+                          Old Regime Tax
+                        </h3>
                         <p className="text-2xl font-bold text-blue-600">
                           ₹{result.oldRegime.toLocaleString()}
                         </p>
                       </div>
                       <div className="p-4 bg-purple-50 rounded-lg">
-                        <h3 className="font-semibold text-purple-700">New Regime Tax</h3>
+                        <h3 className="font-semibold text-purple-700">
+                          New Regime Tax
+                        </h3>
                         <p className="text-2xl font-bold text-purple-600">
                           ₹{result.newRegime.toLocaleString()}
                         </p>
@@ -215,7 +240,7 @@ export default function TaxRegimeCalculator() {
                         ₹{result.difference.toLocaleString()}
                       </p>
                       <p className="text-sm text-green-600 mt-1">
-                        with {result.winner === 'new' ? 'New' : 'Old'} Regime
+                        with {result.winner === "new" ? "New" : "Old"} Regime
                       </p>
                     </div>
                   </CardContent>
@@ -228,7 +253,8 @@ export default function TaxRegimeCalculator() {
         <div className="mt-8 text-center text-sm text-gray-500">
           <p className="flex items-center justify-center gap-2">
             <AlertCircle className="h-4 w-4" />
-            Tax calculation is indicative. Consult a tax advisor for exact figures.
+            Tax calculation is indicative. Consult a tax advisor for exact
+            figures.
           </p>
           <a
             href="https://incometaxindia.gov.in/Pages/tax-slabs.aspx"

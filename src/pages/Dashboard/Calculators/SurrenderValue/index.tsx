@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -26,7 +26,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Input } from '@/components/ui/Input';
+import { Input } from "@/components/ui/Input";
 
 interface SurrenderValueResult {
   surrenderValue: number;
@@ -38,10 +38,10 @@ interface SurrenderValueResult {
 
 export default function InsuranceSurrenderValueCalculator() {
   const [formData, setFormData] = useState({
-    policyType: 'traditional',
+    policyType: "traditional",
     sumAssured: 1000000,
     premiumAmount: 50000,
-    premiumFrequency: 'yearly',
+    premiumFrequency: "yearly",
     policyTerm: 20,
     completedYears: 5,
     bonusRate: 40, // per 1000 sum assured
@@ -50,20 +50,19 @@ export default function InsuranceSurrenderValueCalculator() {
   const [result, setResult] = useState<SurrenderValueResult | null>(null);
 
   const calculateSurrenderValue = () => {
-    const {
-      sumAssured,
-      premiumAmount,
-      completedYears,
-      bonusRate,
-    } = formData;
+    const { sumAssured, premiumAmount, completedYears, bonusRate } = formData;
 
     // Total premiums paid
     const totalPremiumsPaid = premiumAmount * completedYears;
 
     // Guaranteed surrender value (typically 30% to 90% of premiums paid)
     let guaranteedPercentage = 30;
-    if (completedYears > 7) guaranteedPercentage = 50;
-    if (completedYears > 10) guaranteedPercentage = 90;
+    if (completedYears > 7) {
+      guaranteedPercentage = 50;
+    }
+    if (completedYears > 10) {
+      guaranteedPercentage = 90;
+    }
 
     const guaranteedValue = (totalPremiumsPaid * guaranteedPercentage) / 100;
 
@@ -112,17 +111,21 @@ export default function InsuranceSurrenderValueCalculator() {
                   <Label>Policy Type</Label>
                   <Select
                     value={formData.policyType}
-                    onValueChange={(value) => 
-                      setFormData(prev => ({ ...prev, policyType: value }))
+                    onValueChange={(value) =>
+                      setFormData((prev) => ({ ...prev, policyType: value }))
                     }
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Select policy type" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="traditional">Traditional Policy</SelectItem>
+                      <SelectItem value="traditional">
+                        Traditional Policy
+                      </SelectItem>
                       <SelectItem value="ulip">ULIP</SelectItem>
-                      <SelectItem value="endowment">Endowment Policy</SelectItem>
+                      <SelectItem value="endowment">
+                        Endowment Policy
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -136,7 +139,8 @@ export default function InsuranceSurrenderValueCalculator() {
                           <HelpCircle className="h-4 w-4 ml-2 inline-block text-gray-400" />
                         </TooltipTrigger>
                         <TooltipContent>
-                          The guaranteed amount your nominees receive on policy maturity
+                          The guaranteed amount your nominees receive on policy
+                          maturity
                         </TooltipContent>
                       </Tooltip>
                     </TooltipProvider>
@@ -145,7 +149,12 @@ export default function InsuranceSurrenderValueCalculator() {
                     id="sumAssured"
                     type="number"
                     value={formData.sumAssured}
-                    onChange={(e) => setFormData(prev => ({ ...prev, sumAssured: Number(e.target.value) }))}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        sumAssured: Number(e.target.value),
+                      }))
+                    }
                   />
                 </div>
 
@@ -155,7 +164,12 @@ export default function InsuranceSurrenderValueCalculator() {
                     id="premiumAmount"
                     type="number"
                     value={formData.premiumAmount}
-                    onChange={(e) => setFormData(prev => ({ ...prev, premiumAmount: Number(e.target.value) }))}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        premiumAmount: Number(e.target.value),
+                      }))
+                    }
                   />
                 </div>
 
@@ -163,8 +177,11 @@ export default function InsuranceSurrenderValueCalculator() {
                   <Label>Premium Frequency</Label>
                   <Select
                     value={formData.premiumFrequency}
-                    onValueChange={(value) => 
-                      setFormData(prev => ({ ...prev, premiumFrequency: value }))
+                    onValueChange={(value) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        premiumFrequency: value,
+                      }))
                     }
                   >
                     <SelectTrigger>
@@ -184,7 +201,12 @@ export default function InsuranceSurrenderValueCalculator() {
                     id="completedYears"
                     type="number"
                     value={formData.completedYears}
-                    onChange={(e) => setFormData(prev => ({ ...prev, completedYears: Number(e.target.value) }))}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        completedYears: Number(e.target.value),
+                      }))
+                    }
                   />
                 </div>
 
@@ -216,13 +238,17 @@ export default function InsuranceSurrenderValueCalculator() {
                 <div className="space-y-6">
                   <div className="grid grid-cols-2 gap-4">
                     <div className="p-4 bg-blue-50 rounded-lg">
-                      <h3 className="font-semibold text-blue-700">Total Premiums Paid</h3>
+                      <h3 className="font-semibold text-blue-700">
+                        Total Premiums Paid
+                      </h3>
                       <p className="text-2xl font-bold text-blue-600">
                         ₹{result.paidPremiums.toLocaleString()}
                       </p>
                     </div>
                     <div className="p-4 bg-green-50 rounded-lg">
-                      <h3 className="font-semibold text-green-700">Surrender Value</h3>
+                      <h3 className="font-semibold text-green-700">
+                        Surrender Value
+                      </h3>
                       <p className="text-2xl font-bold text-green-600">
                         ₹{result.surrenderValue.toLocaleString()}
                       </p>
@@ -230,7 +256,9 @@ export default function InsuranceSurrenderValueCalculator() {
                   </div>
 
                   <div className="p-4 bg-red-50 rounded-lg">
-                    <h3 className="font-semibold text-red-700">Loss on Surrender</h3>
+                    <h3 className="font-semibold text-red-700">
+                      Loss on Surrender
+                    </h3>
                     <p className="text-2xl font-bold text-red-600">
                       ₹{result.loss.toLocaleString()}
                     </p>
@@ -246,18 +274,23 @@ export default function InsuranceSurrenderValueCalculator() {
                     <TableBody>
                       <TableRow>
                         <TableCell>Guaranteed Value</TableCell>
-                        <TableCell>₹{result.guaranteedValue.toLocaleString()}</TableCell>
+                        <TableCell>
+                          ₹{result.guaranteedValue.toLocaleString()}
+                        </TableCell>
                       </TableRow>
                       <TableRow>
                         <TableCell>Bonus Value</TableCell>
-                        <TableCell>₹{result.bonusValue.toLocaleString()}</TableCell>
+                        <TableCell>
+                          ₹{result.bonusValue.toLocaleString()}
+                        </TableCell>
                       </TableRow>
                     </TableBody>
                   </Table>
                 </div>
               ) : (
                 <div className="text-center text-gray-500 py-8">
-                  Enter policy details and calculate to see surrender value analysis
+                  Enter policy details and calculate to see surrender value
+                  analysis
                 </div>
               )}
             </CardContent>
@@ -266,9 +299,10 @@ export default function InsuranceSurrenderValueCalculator() {
 
         <div className="text-center text-sm text-gray-500 mt-8">
           <p>
-            Note: This is an indicative calculation. Actual surrender value may vary based on 
-            insurance company policies, market conditions, and other factors. Please consult 
-            your insurance provider for exact values.
+            Note: This is an indicative calculation. Actual surrender value may
+            vary based on insurance company policies, market conditions, and
+            other factors. Please consult your insurance provider for exact
+            values.
           </p>
         </div>
       </div>

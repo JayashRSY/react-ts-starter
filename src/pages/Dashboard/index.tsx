@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   ResponsiveContainer,
@@ -13,7 +13,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { ArrowUpRight, ArrowDownRight, Wallet, CreditCard, PiggyBank, TrendingUp, FileText, Download, Eye, Calendar } from "lucide-react";
 import { useAuth } from '@/hooks/useAuth';
 import { format } from 'date-fns';
-import { Link } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 import {
   Table,
   TableBody,
@@ -266,7 +266,7 @@ const Dashboard = () => {
                 <Calendar className="h-5 w-5 text-blue-600" />
                 Recent Credit Card Statements
               </CardTitle>
-              <Link to="/dashboard/credit-card/statement-upload">
+              <Link to="/dashboard/cards/statement-upload">
                 <Button size="sm" className="flex items-center gap-2">
                   <FileText className="h-4 w-4" />
                   Upload New Statement
@@ -279,7 +279,7 @@ const Dashboard = () => {
               ) : statements.length === 0 ? (
                 <div className="text-center py-4">
                   <p className="text-muted-foreground mb-4">You haven&apos;t uploaded any statements yet.</p>
-                  <Link to="/dashboard/credit-card/statement-upload">
+                  <Link to="/dashboard/cards/statement-upload">
                     <Button>Upload Your First Statement</Button>
                   </Link>
                 </div>
@@ -315,7 +315,7 @@ const Dashboard = () => {
                               >
                                 <Download className="h-4 w-4" />
                               </Button>
-                              <Link to={`/dashboard/credit-card/statement-details/${statement.id}`}>
+                              <Link to={`/dashboard/cards/statement-details/${statement.id}`}>
                                 <Button variant="outline" size="sm">
                                   <Eye className="h-4 w-4" />
                                 </Button>
@@ -327,7 +327,7 @@ const Dashboard = () => {
                     </TableBody>
                   </Table>
                   <div className="mt-4 text-right">
-                    <Link to="/dashboard/credit-card/statement-history">
+                    <Link to="/dashboard/cards/statement-history">
                       <Button variant="link" className="text-sm">
                         View All Statements →
                       </Button>
@@ -339,6 +339,8 @@ const Dashboard = () => {
           </Card>
         </TabsContent>
       </Tabs>
+      {/* Add Outlet for nested routes */}
+      <Outlet />
     </div>
   );
 };

@@ -318,7 +318,7 @@ const Sidebar: React.FC = () => {
         {!isCollapsed && (
           <div className="flex items-center gap-2">
             <span className="text-lg font-extrabold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent flex items-center gap-1 tracking-tight">
-              <span className="font-mono">WealthWings</span>
+              <span className="font-mono">Wealth Wings</span>
             </span>
           </div>
         )}

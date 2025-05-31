@@ -31,6 +31,7 @@ import { Button } from "@/components/ui/button";
 import { Upload, CreditCard, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { CATEGORIES, CREDIT_CARDS, PLATFORMS } from "@/lib/constants/constants";
+import { recommendCard } from "@/api/cardApi";
 
 // Form schema
 const formSchema = z.object({
@@ -61,13 +62,8 @@ export default function CardRecommender() {
     setIsLoading(true);
     try {
       // TODO: Replace with your real API endpoint
-      const res = await fetch("/api/cards/recommend", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
-      });
-      const data = await res.json();
-      setRecommendationResult(data);
+      const res = await recommendCard(values);
+      setRecommendationResult(res.data);
     } catch (error) {
       console.error("Error:", error);
     } finally {

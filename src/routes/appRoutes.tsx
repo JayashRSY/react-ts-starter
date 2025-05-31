@@ -24,7 +24,9 @@ const IncreasingSIP = lazy(() => import("../pages/Dashboard/Calculators/Increasi
 const HRAExemption = lazy(() => import("../pages/Dashboard/Calculators/HRAExemption/index"));
 const NPSCalculator = lazy(() => import("../pages/Dashboard/Calculators/NPSCalculator/index"));
 const Cards = lazy(() => import("../pages/Dashboard/Cards"));
-const CardRecommender = lazy(() => import("../pages/Dashboard/Cards/Recommender"));
+const CardRecommender = lazy(() => import("../pages/Dashboard/Cards/Recommender/index"));
+const StatementUpload = lazy(() => import("../pages/Dashboard/Cards/StatementUpload/index"));
+const StatementHistory = lazy(() => import("../pages/Dashboard/Cards/StatementHistory/index"));
 
 export const appRoutes = [
   { path: "/", element: Home },
@@ -66,6 +68,8 @@ export const appRoutes = [
         children: [
           { index: true, element: Cards },
           { path: "recommender", element: CardRecommender },
+          { path: "statement-upload", element: StatementUpload },
+          { path: "statement-history", element: StatementHistory },
           { path: "*", element: NotFound },
         ],
       },

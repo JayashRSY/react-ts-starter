@@ -1,7 +1,7 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { CreditCard, Wallet, ArrowUpRight, ArrowDownRight } from "lucide-react";
+import StatementUpload from "./StatementUpload";
 
 const Cards = () => {
   const cards = [
@@ -48,6 +48,9 @@ const Cards = () => {
           Manage your credit cards and track spending limits in one place.
         </p>
       </div>
+
+      {/* Statement Upload */}
+      <StatementUpload />
 
       {/* Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
